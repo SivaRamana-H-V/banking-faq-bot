@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import random
 import nltk
 from nltk.stem.lancaster import LancasterStemmer
-
+import streamlit as st
 
 stemmer = LancasterStemmer()
 def cleanup(sentence):
@@ -108,8 +108,8 @@ def chat():
             continue
 
         t_usr = tfv.transform([cleanup(usr.strip().lower())])
-        class_ = le.inverse_transform(model.predict(t_usr)[0])
-        questionset = data[data['Class']==class_]
+        class_ = le.inverse_transform(model.predict(t_usr))
+        questionset = data[data['Class'] == class_[0] if class_ else '']
 
         if DEBUG:
             print("Question classified under category:", class_)
